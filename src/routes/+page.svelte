@@ -27,6 +27,7 @@
       createdAt: Date.now(),
       assignee: assignees[0],
       deadline: null,
+      new: false,
       text: "finish Svelte tutorial",
     },
     {
@@ -35,6 +36,7 @@
       createdAt: Date.now(),
       assignee: assignees[0],
       deadline: null,
+      new: false,
       text: "build an app",
     },
     {
@@ -43,6 +45,7 @@
       createdAt: Date.now(),
       assignee: assignees[0],
       deadline: null,
+      new: false,
       text: "world domination",
     },
   ]);
@@ -56,17 +59,19 @@
   function displayCompleted() {
     return todos.filter((t) => t.done && !t.deleted);
   }
-
+  // todo fix highlighting newly added item
   function add() {
     if (newTodo.text.trim()) {
-      todos.unshift({
+      let newTodoItem = {
         done: false,
         deleted: false,
         createdAt: Date.now(),
         assignee: assignees[0],
         deadline: null,
         text: newTodo.text,
-      });
+        new: true,
+      };
+      todos = [newTodoItem, ...todos];
       newTodo.text = "";
     }
   }
@@ -89,7 +94,7 @@
   <div class="centered">
     <h1>todos</h1>
     <ul class="todos">
-      <li class="new-todo">
+      <li class="todo">
         <button onclick={add}>+</button>
         <input
           type="text"
@@ -98,9 +103,9 @@
         />
       </li>
       {#each displayActive() as todo}
-        <li class:done={todo.done}>
+        <li class="todo" class:done={todo.done} class:highlight={todo.new}>
           <input type="checkbox" bind:checked={todo.done} />
-          <input type="text" bind:value={todo.text} />
+          <input type="text" class="todo-label" bind:value={todo.text} />
           <select bind:value={todo.assignee}>
             {#each assignees as assignee}
               <option value={assignee}>
@@ -116,11 +121,9 @@
     <p>{remaining} of {notDeleted} remaining</p>
     <h5>Completed</h5>
     <ul class="todos">
-      <li class="new-todo">
-        <button onclick={clear}> Clear completed </button>
-      </li>
+      <button onclick={clear}> Clear completed </button>
       {#each displayCompleted() as todo}
-        <li class:done={todo.done}>
+        <li class="todo" class:done={todo.done}>
           <input type="checkbox" bind:checked={todo.done} />
           <input type="text" bind:value={todo.text} />
           <span>{todo.assignee.text}</span>
@@ -139,10 +142,22 @@
     margin: 0 auto;
   }
 
-  .new-todo {
-    display: flex;
-    align-items: center;
+  .todo {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin: 0.5em 0;
+    padding: 1em;
+    transition: box-shadow 0.3s ease;
+    display: flex;
+  }
+
+  .todo:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  .todo-label {
+    background-color: transparent;
   }
 
   .centered {
@@ -150,6 +165,18 @@
     margin: 0 auto;
   }
 
+  .highlight {
+    animation: fadeHighlight 3s forwards;
+  }
+
+  @keyframes fadeHighlight {
+    0% {
+      background-color: yellow;
+    }
+    100% {
+      background-color: #fff;
+    }
+  }
   .done {
     opacity: 0.4;
   }
