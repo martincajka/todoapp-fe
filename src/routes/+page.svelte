@@ -1,7 +1,5 @@
 <script>
   import { text } from "@sveltejs/kit";
-  import TodoItem from "../components/TodoItem.svelte";
-  import TodoList from "../components/TodoList.svelte";
 
   let assignees = $state([
     {
@@ -35,7 +33,7 @@
       deleted: false,
       createdAt: Date.now(),
       assignee: assignees[0],
-      deadline: null,
+      deadline: Date.now() + 1000 * 60 * 60 * 24 * 7,
       new: false,
       text: "build an app",
     },
@@ -51,6 +49,7 @@
   ]);
 
   let newTodo = $state({ text: "" });
+  let expandedTodo = $state(null); // Track the currently expanded todo item
 
   function displayActive() {
     return todos.filter((t) => !t.done && !t.deleted);
@@ -76,6 +75,10 @@
     }
   }
 
+  function toggleExpand(todo) {
+    expandedTodo = expandedTodo === todo ? null : todo;
+  }
+
   function deleteTodo(todo) {
     return () => {
       todo.deleted = true;
@@ -94,7 +97,7 @@
   <div class="centered">
     <h1>todos</h1>
     <ul class="todos">
-      <li class="todo">
+      <li class="todo-input">
         <button onclick={add}>+</button>
         <input
           type="text"
@@ -104,17 +107,28 @@
       </li>
       {#each displayActive() as todo}
         <li class="todo" class:done={todo.done} class:highlight={todo.new}>
-          <input type="checkbox" bind:checked={todo.done} />
-          <input type="text" class="todo-label" bind:value={todo.text} />
-          <select bind:value={todo.assignee}>
-            {#each assignees as assignee}
-              <option value={assignee}>
-                {assignee.text}
-              </option>
-            {/each}
-          </select>
-          <button>Edit</button>
-          <button onclick={deleteTodo(todo)}>x</button>
+          <div class="todo-header">
+            <input type="checkbox" bind:checked={todo.done} />
+            <input type="text" class="todo-label" bind:value={todo.text} />
+            <button onclick={() => toggleExpand(todo)}>More</button>
+            <select bind:value={todo.assignee}>
+              {#each assignees as assignee}
+                <option value={assignee}>
+                  {assignee.text}
+                </option>
+              {/each}
+            </select>
+            <button>Edit</button>
+            <button onclick={deleteTodo(todo)}>x</button>
+          </div>
+          {#if expandedTodo === todo}
+            <div class="details">
+              <p>Created At: {new Date(todo.createdAt).toLocaleString()}</p>
+              {#if todo.deadline}
+                <p>Deadline: {new Date(todo.deadline).toLocaleString()}</p>
+              {/if}
+            </div>
+          {/if}
         </li>
       {/each}
     </ul>
@@ -124,10 +138,28 @@
       <button onclick={clear}> Clear completed </button>
       {#each displayCompleted() as todo}
         <li class="todo" class:done={todo.done}>
-          <input type="checkbox" bind:checked={todo.done} />
-          <input type="text" bind:value={todo.text} />
-          <span>{todo.assignee.text}</span>
-          <button onclick={deleteTodo(todo)}>x</button>
+          <div class="todo-header">
+            <input type="checkbox" bind:checked={todo.done} />
+            <input type="text" class="todo-label" bind:value={todo.text} />
+            <button onclick={() => toggleExpand(todo)}>More</button>
+            <select bind:value={todo.assignee}>
+              {#each assignees as assignee}
+                <option value={assignee}>
+                  {assignee.text}
+                </option>
+              {/each}
+            </select>
+            <button>Edit</button>
+            <button onclick={deleteTodo(todo)}>x</button>
+          </div>
+          {#if expandedTodo === todo}
+            <div class="details">
+              <p>Created At: {new Date(todo.createdAt).toLocaleString()}</p>
+              {#if todo.deadline}
+                <p>Deadline: {new Date(todo.deadline).toLocaleString()}</p>
+              {/if}
+            </div>
+          {/if}
         </li>
       {/each}
     </ul>
@@ -181,8 +213,39 @@
     opacity: 0.4;
   }
 
-  li {
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  li.todo-input {
     display: flex;
+    align-items: center;
+    margin: 0.5em 0;
+  }
+
+  li.todo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 0.5em 0;
+  }
+
+  .todo-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .details {
+    margin-top: 0.5em;
+    width: auto;
+    text-align: left;
+  }
+
+  .details p {
+    margin: 0.5em 0 0 0;
   }
 
   input[type="text"] {
@@ -190,10 +253,5 @@
     padding: 0.5em;
     margin: -0.2em 0;
     border: none;
-  }
-
-  ul {
-    list-style: none;
-    padding: 0;
   }
 </style>
