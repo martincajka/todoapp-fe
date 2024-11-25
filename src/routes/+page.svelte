@@ -89,8 +89,10 @@
     todos = todos.filter((t) => !t.done);
   }
 
-  let remaining = $derived(todos.filter((t) => !t.done && !t.deleted).length);
-  let notDeleted = $derived(todos.filter((t) => !t.deleted).length);
+  let remainingTodos = $derived(
+    todos.filter((t) => !t.done && !t.deleted).length
+  );
+  let allTodos = $derived(todos.filter((t) => !t.deleted).length);
 </script>
 
 <main>
@@ -132,37 +134,32 @@
         </li>
       {/each}
     </ul>
-    <p>{remaining} of {notDeleted} remaining</p>
-    <h5>Completed</h5>
-    <ul class="todos">
-      <button onclick={clear}> Clear completed </button>
-      {#each displayCompleted() as todo}
-        <li class="todo" class:done={todo.done}>
-          <div class="todo-header">
-            <input type="checkbox" bind:checked={todo.done} />
-            <input type="text" class="todo-label" bind:value={todo.text} />
-            <button onclick={() => toggleExpand(todo)}>More</button>
-            <select bind:value={todo.assignee}>
-              {#each assignees as assignee}
-                <option value={assignee}>
-                  {assignee.text}
-                </option>
-              {/each}
-            </select>
-            <button>Edit</button>
-            <button onclick={deleteTodo(todo)}>x</button>
-          </div>
-          {#if expandedTodo === todo}
-            <div class="details">
-              <p>Created At: {new Date(todo.createdAt).toLocaleString()}</p>
-              {#if todo.deadline}
-                <p>Deadline: {new Date(todo.deadline).toLocaleString()}</p>
-              {/if}
+    <p>{remainingTodos} of {allTodos} remaining</p>
+    {#if allTodos !== remainingTodos}
+      <h5>Completed</h5>
+      <ul class="todos">
+        <button onclick={clear}> Clear completed </button>
+        {#each displayCompleted() as todo}
+          <li class="todo" class:done={todo.done}>
+            <div class="todo-header">
+              <input type="checkbox" bind:checked={todo.done} />
+              <input type="text" class="todo-label" bind:value={todo.text} />
+              <button onclick={() => toggleExpand(todo)}>More</button>
+              <span>{todo.assignee.text}</span>
+              <button onclick={deleteTodo(todo)}>x</button>
             </div>
-          {/if}
-        </li>
-      {/each}
-    </ul>
+            {#if expandedTodo === todo}
+              <div class="details">
+                <p>Created At: {new Date(todo.createdAt).toLocaleString()}</p>
+                {#if todo.deadline}
+                  <p>Deadline: {new Date(todo.deadline).toLocaleString()}</p>
+                {/if}
+              </div>
+            {/if}
+          </li>
+        {/each}
+      </ul>
+    {/if}
   </div>
 </main>
 
