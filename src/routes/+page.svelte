@@ -75,6 +75,12 @@
     }
   }
 
+  function handleKeydown(event) {
+    if (event.key === "Enter") {
+      add();
+    }
+  }
+
   function toggleExpand(todo) {
     expandedTodo = expandedTodo === todo ? null : todo;
   }
@@ -105,6 +111,7 @@
           type="text"
           placeholder="What needs to be done?"
           bind:value={newTodo.text}
+          onkeydown={handleKeydown}
         />
       </li>
       {#each displayActive() as todo}
