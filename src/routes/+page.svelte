@@ -106,7 +106,7 @@
     <div class="todo-header">
       <input type="checkbox" bind:checked={d.done} />
       <input type="text" class="todo-label" bind:value={d.text} />
-      <button onclick={() => toggleExpand(todo)}>More</button>
+      <button onclick={() => toggleExpand(d)}>More</button>
       <select bind:value={d.assignee}>
         {#each assignees as assignee}
           <option value={assignee}>
