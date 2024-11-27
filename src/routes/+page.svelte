@@ -103,50 +103,46 @@
 </main>
 
 {#snippet todoRow(d)}
-  <li class="todo" class:done={d.done} class:highlight={d.new}>
-    <div class="todo-header">
-      <input type="checkbox" bind:checked={d.done} />
-      <input type="text" class="todo-label" bind:value={d.text} />
-      <button onclick={() => toggleExpand(d)}>More</button>
-      <select bind:value={d.assignee}>
-        {#each assignees as assignee}
-          <option value={assignee}>
-            {assignee.text}
-          </option>
-        {/each}
-      </select>
-      <button>Edit</button>
-      <button onclick={deleteTodo(d)}>x</button>
+  <div class="todo-header">
+    <input type="checkbox" bind:checked={d.done} />
+    <input type="text" class="todo-label" bind:value={d.text} />
+    <button onclick={() => toggleExpand(d)}>More</button>
+    <select bind:value={d.assignee}>
+      {#each assignees as assignee}
+        <option value={assignee}>
+          {assignee.text}
+        </option>
+      {/each}
+    </select>
+    <button>Edit</button>
+    <button onclick={deleteTodo(d)}>x</button>
+  </div>
+  {#if expandedTodo === d}
+    <div class="details">
+      <p>Created At: {new Date(d.createdAt).toLocaleString()}</p>
+      {#if d.deadline}
+        <p>Deadline: {new Date(d.deadline).toLocaleString()}</p>
+      {/if}
     </div>
-    {#if expandedTodo === d}
-      <div class="details">
-        <p>Created At: {new Date(d.createdAt).toLocaleString()}</p>
-        {#if d.deadline}
-          <p>Deadline: {new Date(d.deadline).toLocaleString()}</p>
-        {/if}
-      </div>
-    {/if}
-  </li>
+  {/if}
 {/snippet}
 
 {#snippet doneRow(d)}
-  <li class="todo" class:done={d.done}>
-    <div class="todo-header">
-      <input type="checkbox" bind:checked={d.done} />
-      <span class="todo-label">{d.text}</span>
-      <button onclick={() => toggleExpand(d)}>More</button>
-      <span>{d.assignee.text}</span>
-      <button onclick={deleteTodo(d)}>x</button>
+  <div class="todo-header">
+    <input type="checkbox" bind:checked={d.done} />
+    <span class="todo-label">{d.text}</span>
+    <button onclick={() => toggleExpand(d)}>More</button>
+    <span>{d.assignee.text}</span>
+    <button onclick={deleteTodo(d)}>x</button>
+  </div>
+  {#if expandedTodo === d}
+    <div class="details">
+      <p>Created At: {new Date(d.createdAt).toLocaleString()}</p>
+      {#if d.deadline}
+        <p>Deadline: {new Date(d.deadline).toLocaleString()}</p>
+      {/if}
     </div>
-    {#if expandedTodo === d}
-      <div class="details">
-        <p>Created At: {new Date(d.createdAt).toLocaleString()}</p>
-        {#if d.deadline}
-          <p>Deadline: {new Date(d.deadline).toLocaleString()}</p>
-        {/if}
-      </div>
-    {/if}
-  </li>
+  {/if}
 {/snippet}
 
 <style>
@@ -155,20 +151,6 @@
     padding: 1em;
     max-width: 800px;
     margin: 0 auto;
-  }
-
-  .todo {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 0.5em 0;
-    padding: 1em;
-    transition: box-shadow 0.3s ease;
-    display: flex;
-  }
-
-  .todo:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   }
 
   .todo-label {
@@ -185,10 +167,6 @@
     margin: 0 auto;
   }
 
-  .highlight {
-    animation: fadeHighlight 3s forwards;
-  }
-
   @keyframes fadeHighlight {
     0% {
       background-color: yellow;
@@ -197,25 +175,15 @@
       background-color: #fff;
     }
   }
-  .done {
-    opacity: 0.4;
-  }
 
   ul {
     list-style: none;
     padding: 0;
   }
 
-  li.todo-input {
+  .todo-input {
     display: flex;
     align-items: center;
-    margin: 0.5em 0;
-  }
-
-  li.todo {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
     margin: 0.5em 0;
   }
 
