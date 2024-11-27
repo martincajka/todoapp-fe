@@ -83,6 +83,7 @@
         <button onclick={add}>+</button>
         <input
           type="text"
+          class="todo-label"
           placeholder="What needs to be done?"
           bind:value={newTodo.text}
           onkeydown={handleKeydown}
@@ -132,7 +133,7 @@
   <li class="todo" class:done={d.done}>
     <div class="todo-header">
       <input type="checkbox" bind:checked={d.done} />
-      <input type="text" class="todo-label" bind:value={d.text} />
+      <span class="todo-label">{d.text}</span>
       <button onclick={() => toggleExpand(d)}>More</button>
       <span>{d.assignee.text}</span>
       <button onclick={deleteTodo(d)}>x</button>
@@ -172,6 +173,11 @@
 
   .todo-label {
     background-color: transparent;
+    flex: 1;
+    padding: 0.5em;
+    margin: -0.2em 0;
+    border: none;
+    text-align: left;
   }
 
   .centered {
@@ -228,12 +234,5 @@
 
   .details p {
     margin: 0.5em 0 0 0;
-  }
-
-  input[type="text"] {
-    flex: 1;
-    padding: 0.5em;
-    margin: -0.2em 0;
-    border: none;
   }
 </style>
