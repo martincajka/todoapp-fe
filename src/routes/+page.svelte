@@ -1,62 +1,27 @@
 <script>
   import { text } from "@sveltejs/kit";
-
-  let assignees = $state([
-    {
-      id: 1,
-      text: `Not assigned`,
-    },
-    {
-      id: 2,
-      text: `John Doe`,
-    },
-    {
-      id: 3,
-      text: `Jane Doe`,
-    },
-  ]);
-
-  let selected = $state();
-
-  let todos = $state([
-    {
-      done: false,
-      deleted: false,
-      createdAt: Date.now(),
-      assignee: assignees[0],
-      deadline: null,
-      new: false,
-      text: "finish Svelte tutorial",
-    },
-    {
-      done: false,
-      deleted: false,
-      createdAt: Date.now(),
-      assignee: assignees[0],
-      deadline: Date.now() + 1000 * 60 * 60 * 24 * 7,
-      new: false,
-      text: "build an app",
-    },
-    {
-      done: false,
-      deleted: false,
-      createdAt: Date.now(),
-      assignee: assignees[0],
-      deadline: null,
-      new: false,
-      text: "world domination",
-    },
-  ]);
+  import { todos } from "./data.svelte.js";
+  import { assignees } from "./data.svelte.js";
+  import FilteredTodos from "./FilteredTodos.svelte";
 
   let newTodo = $state({ text: "" });
   let expandedTodo = $state(null); // Track the currently expanded todo item
 
+  let search = $state("");
+
+  function filtered(predicate) {
+    return todos.filter(predicate).filter((d) => {
+      if (search === "") return true;
+      const regex = new RegExp(search, "i");
+      return regex.test(d.text);
+    });
+  }
   function displayActive() {
-    return todos.filter((t) => !t.done && !t.deleted);
+    return filtered((t) => !t.done && !t.deleted);
   }
 
   function displayCompleted() {
-    return todos.filter((t) => t.done && !t.deleted);
+    return filtered((t) => t.done && !t.deleted);
   }
   // todo fix highlighting newly added item
   function add() {
@@ -70,7 +35,8 @@
         text: newTodo.text,
         new: true,
       };
-      todos = [newTodoItem, ...todos];
+      todos.unshift(newTodoItem);
+      // todos = [newTodoItem, ...todos];
       newTodo.text = "";
     }
   }
@@ -92,7 +58,12 @@
   }
 
   function clear() {
-    todos = todos.filter((t) => !t.done);
+    todos.forEach((t) => {
+      if (t.done) {
+        t.deleted = true;
+      }
+    });
+    // todos = todos.filter((t) => !t.done);
   }
 
   let remainingTodos = $derived(
@@ -104,6 +75,9 @@
 <main>
   <div class="centered">
     <h1>todos</h1>
+    <label>
+      Filter: <input bind:value={search} />
+    </label>
     <ul class="todos">
       <li class="todo-input">
         <button onclick={add}>+</button>
@@ -114,61 +88,65 @@
           onkeydown={handleKeydown}
         />
       </li>
-      {#each displayActive() as todo}
-        <li class="todo" class:done={todo.done} class:highlight={todo.new}>
-          <div class="todo-header">
-            <input type="checkbox" bind:checked={todo.done} />
-            <input type="text" class="todo-label" bind:value={todo.text} />
-            <button onclick={() => toggleExpand(todo)}>More</button>
-            <select bind:value={todo.assignee}>
-              {#each assignees as assignee}
-                <option value={assignee}>
-                  {assignee.text}
-                </option>
-              {/each}
-            </select>
-            <button>Edit</button>
-            <button onclick={deleteTodo(todo)}>x</button>
-          </div>
-          {#if expandedTodo === todo}
-            <div class="details">
-              <p>Created At: {new Date(todo.createdAt).toLocaleString()}</p>
-              {#if todo.deadline}
-                <p>Deadline: {new Date(todo.deadline).toLocaleString()}</p>
-              {/if}
-            </div>
-          {/if}
-        </li>
-      {/each}
+      <FilteredTodos data={displayActive()} row={todoRow} />
     </ul>
     <p>{remainingTodos} of {allTodos} remaining</p>
     {#if allTodos !== remainingTodos}
       <h5>Completed</h5>
       <ul class="todos">
         <button onclick={clear}> Clear completed </button>
-        {#each displayCompleted() as todo}
-          <li class="todo" class:done={todo.done}>
-            <div class="todo-header">
-              <input type="checkbox" bind:checked={todo.done} />
-              <input type="text" class="todo-label" bind:value={todo.text} />
-              <button onclick={() => toggleExpand(todo)}>More</button>
-              <span>{todo.assignee.text}</span>
-              <button onclick={deleteTodo(todo)}>x</button>
-            </div>
-            {#if expandedTodo === todo}
-              <div class="details">
-                <p>Created At: {new Date(todo.createdAt).toLocaleString()}</p>
-                {#if todo.deadline}
-                  <p>Deadline: {new Date(todo.deadline).toLocaleString()}</p>
-                {/if}
-              </div>
-            {/if}
-          </li>
-        {/each}
+        <FilteredTodos data={displayCompleted()} row={doneRow} />
       </ul>
     {/if}
   </div>
 </main>
+
+{#snippet todoRow(d)}
+  <li class="todo" class:done={d.done} class:highlight={d.new}>
+    <div class="todo-header">
+      <input type="checkbox" bind:checked={d.done} />
+      <input type="text" class="todo-label" bind:value={d.text} />
+      <button onclick={() => toggleExpand(todo)}>More</button>
+      <select bind:value={d.assignee}>
+        {#each assignees as assignee}
+          <option value={assignee}>
+            {assignee.text}
+          </option>
+        {/each}
+      </select>
+      <button>Edit</button>
+      <button onclick={deleteTodo(d)}>x</button>
+    </div>
+    {#if expandedTodo === d}
+      <div class="details">
+        <p>Created At: {new Date(d.createdAt).toLocaleString()}</p>
+        {#if d.deadline}
+          <p>Deadline: {new Date(d.deadline).toLocaleString()}</p>
+        {/if}
+      </div>
+    {/if}
+  </li>
+{/snippet}
+
+{#snippet doneRow(d)}
+  <li class="todo" class:done={d.done}>
+    <div class="todo-header">
+      <input type="checkbox" bind:checked={d.done} />
+      <input type="text" class="todo-label" bind:value={d.text} />
+      <button onclick={() => toggleExpand(d)}>More</button>
+      <span>{d.assignee.text}</span>
+      <button onclick={deleteTodo(d)}>x</button>
+    </div>
+    {#if expandedTodo === d}
+      <div class="details">
+        <p>Created At: {new Date(d.createdAt).toLocaleString()}</p>
+        {#if d.deadline}
+          <p>Deadline: {new Date(d.deadline).toLocaleString()}</p>
+        {/if}
+      </div>
+    {/if}
+  </li>
+{/snippet}
 
 <style>
   main {
