@@ -23,7 +23,7 @@
   function displayCompleted() {
     return filtered((t) => t.done && !t.deleted);
   }
-  // todo fix highlighting newly added item
+  // TODO fix highlighting newly added item
   function add() {
     if (newTodo.text.trim()) {
       let newTodoItem = {
