@@ -78,26 +78,22 @@
     <label>
       Filter: <input bind:value={search} />
     </label>
-    <ul class="todos">
-      <li class="todo-input">
-        <button onclick={add}>+</button>
-        <input
-          type="text"
-          class="todo-label"
-          placeholder="What needs to be done?"
-          bind:value={newTodo.text}
-          onkeydown={handleKeydown}
-        />
-      </li>
-      <FilteredTodos data={displayActive()} row={todoRow} />
-    </ul>
+    <div class="todo-input">
+      <button onclick={add}>+</button>
+      <input
+        type="text"
+        class="todo-label"
+        placeholder="What needs to be done?"
+        bind:value={newTodo.text}
+        onkeydown={handleKeydown}
+      />
+    </div>
+    <FilteredTodos data={displayActive()} row={todoRow} />
     <p>{remainingTodos} of {allTodos} remaining</p>
     {#if allTodos !== remainingTodos}
       <h5>Completed</h5>
-      <ul class="todos">
-        <button onclick={clear}> Clear completed </button>
-        <FilteredTodos data={displayCompleted()} row={doneRow} />
-      </ul>
+      <button onclick={clear}> Clear completed </button>
+      <FilteredTodos data={displayCompleted()} row={doneRow} />
     {/if}
   </div>
 </main>
@@ -174,11 +170,6 @@
     100% {
       background-color: #fff;
     }
-  }
-
-  ul {
-    list-style: none;
-    padding: 0;
   }
 
   .todo-input {

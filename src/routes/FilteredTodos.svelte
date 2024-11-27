@@ -3,12 +3,19 @@
 </script>
 
 {#each data as d}
-  <li class="todo" class:done={d.done} class:highlight={d.new}>
-    {@render row(d)}
-  </li>
+  <ul>
+    <li class="todo" class:done={d.done} class:highlight={d.new}>
+      {@render row(d)}
+    </li>
+  </ul>
 {/each}
 
 <style>
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
   .todo {
     background-color: #fff;
     border-radius: 8px;
