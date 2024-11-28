@@ -73,7 +73,7 @@
 </script>
 
 <main>
-  <div class="centered">
+  <div>
     <h1>todos</h1>
     <label>
       Filter: <input bind:value={search} />
@@ -156,11 +156,6 @@
     margin: -0.2em 0;
     border: none;
     text-align: left;
-  }
-
-  .centered {
-    max-width: auto;
-    margin: 0 auto;
   }
 
   @keyframes fadeHighlight {
