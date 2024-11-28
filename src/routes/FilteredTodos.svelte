@@ -2,13 +2,13 @@
   let { data, row } = $props();
 </script>
 
-{#each data as d}
-  <ul>
+<ul>
+  {#each data as d}
     <li class="todo" class:done={d.done} class:highlight={d.new}>
       {@render row(d)}
     </li>
-  </ul>
-{/each}
+  {/each}
+</ul>
 
 <style>
   ul {

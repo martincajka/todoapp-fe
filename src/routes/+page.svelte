@@ -75,9 +75,7 @@
 <main>
   <div>
     <h1>todos</h1>
-    <label>
-      Filter: <input bind:value={search} />
-    </label>
+    <input type="text" placeholder="Search" bind:value={search} />
     <div class="todo-input">
       <button onclick={add}>+</button>
       <input
