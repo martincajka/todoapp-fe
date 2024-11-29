@@ -1,7 +1,7 @@
 <script>
   import { text } from "@sveltejs/kit";
-  import { todos } from "./data.svelte.js";
-  import { assignees } from "./data.svelte.js";
+  import { todos } from "$lib/data.svelte.js";
+  import { assignees } from "$lib/data.svelte.js";
   import FilteredTodos from "./FilteredTodos.svelte";
 
   let newTodo = $state({ text: "" });
