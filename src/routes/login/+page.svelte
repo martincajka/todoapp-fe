@@ -1,66 +1,22 @@
 <script>
-  // import { auth } from './firebaseConfig'; // Or your auth setup
-  // import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from 'firebase/auth'; // Example using Firebase
-  import { goto } from "$app/navigation"; // For SvelteKit routing
+  import { goto } from "$app/navigation";
 
   let email = "";
   let password = "";
-  let error = null;
-  let loading = false;
 
-  // onAuthStateChanged(auth, (user) => {
-  //   if (user) {
-  //     // User is signed in, redirect to protected page
-  //     goto('/protected-page'); // Replace with your route
-  //   }
-  // });
-
-  async function handleFormLogin() {
-    loading = true;
-    error = null; // Clear any previous errors
-    try {
-      // Replace with your actual form login logic (e.g., API call)
-      // Example with Firebase:
-      // await signInWithEmailAndPassword(auth, email, password);
-
-      // Mock success (replace with your actual login)
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API call delay
-      goto("/app");
-    } catch (err) {
-      error = err.message; // Or a more user-friendly message
-      console.error("Login error:", err);
-    } finally {
-      loading = false;
-    }
-  }
-
-  async function handleGoogleLogin() {
-    // loading = true;
-    // error = null;
-    // try {
-    //   const provider = new GoogleAuthProvider();
-    //   await signInWithPopup(auth, provider);
-    // } catch (err) {
-    //   error = err.message;
-    //   console.error("Google login error:", err);
-    // } finally {
-    //   loading = false;
-    // }
+  function handleLogin() {
+    // Your login logic here
+    console.log("Logging in:", email, password);
   }
 
   function handleForgotPassword() {
-    // Navigate to your "Forgot Password" page
-    goto("/forgot-password");
+    goto("/forgot-password"); // Navigate to forgot password page
   }
 </script>
 
 <div class="login-container">
   <div class="login-box">
     <h2>Login</h2>
-
-    {#if error}
-      <p class="error-message">{error}</p>
-    {/if}
 
     <div class="input-group">
       <label for="email">Email:</label>
@@ -72,42 +28,34 @@
       <input type="password" id="password" bind:value={password} required />
     </div>
 
-    <button on:click={handleFormLogin} disabled={loading}>
-      {#if loading}
-        Logging in...
-      {:else}
-        Login
-      {/if}
-    </button>
-
-    <button
-      class="google-login-button"
-      on:click={handleGoogleLogin}
-      disabled={loading}
-    >
-      {#if loading}
-        Logging in...
-      {:else}
-        Login with Google
-      {/if}
-    </button>
+    <button on:click={handleLogin}>Login</button>
 
     <div class="forgot-password-link">
       <a href="/forgot-password" on:click|preventDefault={handleForgotPassword}
         >Forgot Password?</a
       >
     </div>
+
+    <div class="register-link">
+      Don't have an account? <a
+        href="/register"
+        on:click|preventDefault={() => goto("/register")}>Register</a
+      >
+    </div>
   </div>
 </div>
 
 <style>
-  /* Basic styling - customize as needed */
+  /* Inherit styles from registration page for consistency */
   .login-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh; /* Ensure full viewport height */
-    background-color: #f0f0f0; /* Example background */
+    min-height: 100vh;
+    background: linear-gradient(to bottom right, #6366f1, #ec4899);
+    color: white;
+    font-family: "Arial", sans-serif;
+    overflow: hidden;
   }
 
   .login-box {
@@ -115,7 +63,14 @@
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 350px; /* Adjust width as needed */
+    width: 400px;
+    color: #333;
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #6366f1;
   }
 
   .input-group {
@@ -125,6 +80,7 @@
   label {
     display: block;
     margin-bottom: 0.5rem;
+    font-weight: 500;
   }
 
   input[type="email"],
@@ -134,30 +90,60 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
+    font-size: 1rem;
   }
 
   button {
-    background-color: #007bff; /* Example color */
+    background-color: #6366f1;
     color: white;
-    padding: 0.8rem 1.2rem;
+    padding: 0.8rem 1.5rem;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
+    transition:
+      background-color 0.3s ease,
+      transform 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    width: 100%;
   }
 
-  .error-message {
-    color: red;
-    margin-top: 0.5rem;
-  }
-
-  .google-login-button {
-    background-color: #4285f4; /* Google blue */
-    color: white;
-    /* Add Google icon if desired */
+  button:hover {
+    background-color: #5258da;
+    transform: scale(1.02);
   }
 
   .forgot-password-link {
     margin-top: 1rem;
     text-align: center;
+    color: #6366f1;
+  }
+
+  .forgot-password-link a {
+    color: inherit;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .forgot-password-link a:hover {
+    text-decoration: underline;
+  }
+
+  .register-link {
+    /* Added class for the register link */
+    margin-top: 1rem;
+    text-align: center;
+    color: #6366f1;
+  }
+
+  .register-link a {
+    color: inherit;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .register-link a:hover {
+    text-decoration: underline;
   }
 </style>

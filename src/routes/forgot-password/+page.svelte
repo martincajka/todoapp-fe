@@ -1,61 +1,39 @@
 <script>
   import { goto } from "$app/navigation";
 
-  let name = "";
   let email = "";
-  let password = "";
-  let confirmPassword = "";
 
-  // Placeholder for form submission (replace with your actual logic)
-  function handleRegister() {
-    // Your registration logic here
-    console.log("Registering:", name, email, password, confirmPassword);
+  function handleResetPassword() {
+    // Your forgot password logic here (e.g., sending a reset email)
+    console.log("Resetting password for:", email);
+    // After successful reset request (or mock success), maybe redirect to login
+    // goto('/login'); // Uncomment when you have actual functionality
+    alert("Password reset email sent (mock)."); // Replace with real logic
   }
 </script>
 
-<div class="registration-container">
-  <div class="registration-box">
-    <h2>Register</h2>
-
-    <div class="input-group">
-      <label for="name">Name:</label>
-      <input type="text" id="name" bind:value={name} required />
-    </div>
+<div class="forgot-password-container">
+  <div class="forgot-password-box">
+    <h2>Forgot Password</h2>
 
     <div class="input-group">
       <label for="email">Email:</label>
       <input type="email" id="email" bind:value={email} required />
     </div>
 
-    <div class="input-group">
-      <label for="password">Password:</label>
-      <input type="password" id="password" bind:value={password} required />
-    </div>
-
-    <div class="input-group">
-      <label for="confirm-password">Confirm Password:</label>
-      <input
-        type="password"
-        id="confirm-password"
-        bind:value={confirmPassword}
-        required
-      />
-    </div>
-
-    <button on:click={handleRegister}>Register</button>
+    <button on:click={handleResetPassword}>Reset Password</button>
 
     <div class="login-link">
-      Already have an account? <a
-        href="/login"
-        on:click|preventDefault={() => goto("/login")}>Login</a
+      <a href="/login" on:click|preventDefault={() => goto("/login")}
+        >Back to Login</a
       >
     </div>
   </div>
 </div>
 
 <style>
-  /* Inherit styles from landing page for consistency */
-  .registration-container {
+  /* Inherit styles from login page for consistency */
+  .forgot-password-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -66,19 +44,19 @@
     overflow: hidden;
   }
 
-  .registration-box {
+  .forgot-password-box {
     background-color: white;
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 400px; /* Adjust width as needed */
-    color: #333; /* Darker text color inside the box */
+    width: 400px;
+    color: #333;
   }
 
   h2 {
     text-align: center;
     margin-bottom: 1.5rem;
-    color: #6366f1; /* Match the gradient */
+    color: #6366f1;
   }
 
   .input-group {
@@ -91,9 +69,7 @@
     font-weight: 500;
   }
 
-  input[type="text"],
-  input[type="email"],
-  input[type="password"] {
+  input[type="email"] {
     width: 100%;
     padding: 0.8rem;
     border: 1px solid #ccc;
@@ -115,11 +91,11 @@
       background-color 0.3s ease,
       transform 0.2s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    width: 100%; /* Make the button full width */
+    width: 100%;
   }
 
   button:hover {
-    background-color: #5258da; /* Slightly darker on hover */
+    background-color: #5258da;
     transform: scale(1.02);
   }
 
