@@ -1,190 +1,109 @@
 <script>
-  import { text } from "@sveltejs/kit";
-  import { todos } from "$lib/data.svelte.js";
-  import { assignees } from "$lib/data.svelte.js";
-  import FilteredTodos from "./FilteredTodos.svelte";
+  import { goto } from "$app/navigation"; // For SvelteKit routing
 
-  let newTodo = $state({ text: "" });
-  let expandedTodo = $state(null); // Track the currently expanded todo item
-
-  let search = $state("");
-
-  function filtered(predicate) {
-    return todos.filter(predicate).filter((d) => {
-      if (search === "") return true;
-      const regex = new RegExp(search, "i");
-      return regex.test(d.text);
-    });
-  }
-  function displayActive() {
-    return filtered((t) => !t.done && !t.deleted);
-  }
-
-  function displayCompleted() {
-    return filtered((t) => t.done && !t.deleted);
-  }
-  // TODO fix highlighting newly added item
-  function add() {
-    if (newTodo.text.trim()) {
-      let newTodoItem = {
-        done: false,
-        deleted: false,
-        createdAt: Date.now(),
-        assignee: assignees[0],
-        deadline: null,
-        text: newTodo.text,
-        new: true,
-      };
-      todos.unshift(newTodoItem);
-      // todos = [newTodoItem, ...todos];
-      newTodo.text = "";
-    }
-  }
-
-  function handleKeydown(event) {
-    if (event.key === "Enter") {
-      add();
-    }
-  }
-
-  function toggleExpand(todo) {
-    expandedTodo = expandedTodo === todo ? null : todo;
-  }
-
-  function deleteTodo(todo) {
-    return () => {
-      todo.deleted = true;
-    };
-  }
-
-  function clear() {
-    todos.forEach((t) => {
-      if (t.done) {
-        t.deleted = true;
-      }
-    });
-    // todos = todos.filter((t) => !t.done);
-  }
-
-  let remainingTodos = $derived(
-    todos.filter((t) => !t.done && !t.deleted).length
-  );
-  let allTodos = $derived(todos.filter((t) => !t.deleted).length);
+  // Optional: Add some animations or transitions for a more polished look
+  let showContent = false;
+  setTimeout(() => (showContent = true), 500); // Delay content reveal
 </script>
 
-<main>
-  <div>
-    <h1>todos</h1>
-    <input type="text" placeholder="Search" bind:value={search} />
-    <div class="todo-input">
-      <button onclick={add}>+</button>
-      <input
-        type="text"
-        class="todo-label"
-        placeholder="What needs to be done?"
-        bind:value={newTodo.text}
-        onkeydown={handleKeydown}
-      />
+<div class="landing-container">
+  <div class="landing-content" class:show={showContent}>
+    <h1>Your Awesome ToDo App</h1>
+    <p>
+      Organize your tasks, track your progress, and achieve your goals with our
+      intuitive and powerful ToDo app. Get started today and experience the
+      difference!
+    </p>
+    <div class="cta-buttons">
+      <button on:click={() => goto("/login")}>Login</button>
+      <button on:click={() => goto("/register")}>Register</button>
     </div>
-    <FilteredTodos data={displayActive()} row={todoRow} />
-    <p>{remainingTodos} of {allTodos} remaining</p>
-    {#if allTodos !== remainingTodos}
-      <h5>Completed</h5>
-      <button onclick={clear}> Clear completed </button>
-      <FilteredTodos data={displayCompleted()} row={doneRow} />
-    {/if}
   </div>
-</main>
-
-{#snippet todoRow(d)}
-  <div class="todo-header">
-    <input type="checkbox" bind:checked={d.done} />
-    <input type="text" class="todo-label" bind:value={d.text} />
-    <button onclick={() => toggleExpand(d)}>More</button>
-    <select bind:value={d.assignee}>
-      {#each assignees as assignee}
-        <option value={assignee}>
-          {assignee.text}
-        </option>
-      {/each}
-    </select>
-    <button>Edit</button>
-    <button onclick={deleteTodo(d)}>x</button>
-  </div>
-  {#if expandedTodo === d}
-    <div class="details">
-      <p>Created At: {new Date(d.createdAt).toLocaleString()}</p>
-      {#if d.deadline}
-        <p>Deadline: {new Date(d.deadline).toLocaleString()}</p>
-      {/if}
-    </div>
-  {/if}
-{/snippet}
-
-{#snippet doneRow(d)}
-  <div class="todo-header">
-    <input type="checkbox" bind:checked={d.done} />
-    <span class="todo-label">{d.text}</span>
-    <button onclick={() => toggleExpand(d)}>More</button>
-    <span>{d.assignee.text}</span>
-    <button onclick={deleteTodo(d)}>x</button>
-  </div>
-  {#if expandedTodo === d}
-    <div class="details">
-      <p>Created At: {new Date(d.createdAt).toLocaleString()}</p>
-      {#if d.deadline}
-        <p>Deadline: {new Date(d.deadline).toLocaleString()}</p>
-      {/if}
-    </div>
-  {/if}
-{/snippet}
+</div>
 
 <style>
-  main {
+  /* Basic styling - customize as needed */
+  .landing-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(
+      to bottom right,
+      #6366f1,
+      #ec4899
+    ); /* Example gradient */
+    color: white;
+    font-family: "Arial", sans-serif; /* Example font */
+    overflow: hidden; /* Hide overflow for animations */
+  }
+
+  .landing-content {
     text-align: center;
-    padding: 1em;
-    max-width: 800px;
-    margin: 0 auto;
+    opacity: 0; /* Initially hidden for transition */
+    transform: translateY(20px); /* Initially slightly below */
+    transition:
+      opacity 0.8s ease,
+      transform 0.8s ease; /* Smooth transitions */
   }
 
-  .todo-label {
-    background-color: transparent;
-    flex: 1;
-    padding: 0.5em;
-    margin: -0.2em 0;
+  .landing-content.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    line-height: 1.6; /* Improve readability */
+    max-width: 600px; /* Limit text width for large screens */
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 1rem; /* Add spacing between buttons */
+  }
+
+  button {
+    background-color: white;
+    color: #6366f1; /* Match the gradient */
+    padding: 0.8rem 1.5rem;
     border: none;
-    text-align: left;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease,
+      transform 0.2s ease; /* Button transitions */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
   }
 
-  @keyframes fadeHighlight {
-    0% {
-      background-color: yellow;
+  button:hover {
+    background-color: #f0f0f0; /* Slightly lighter background on hover */
+    transform: scale(1.05); /* Slight scale on hover */
+  }
+
+  /* Responsive adjustments (example) */
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 2.5rem;
     }
-    100% {
-      background-color: #fff;
+
+    p {
+      font-size: 1rem;
     }
-  }
 
-  .todo-input {
-    display: flex;
-    align-items: center;
-    margin: 0.5em 0;
-  }
-
-  .todo-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-  }
-
-  .details {
-    margin-top: 0.5em;
-    width: auto;
-    text-align: left;
-  }
-
-  .details p {
-    margin: 0.5em 0 0 0;
+    .cta-buttons {
+      flex-direction: column; /* Stack buttons vertically on smaller screens */
+      align-items: center;
+    }
   }
 </style>
