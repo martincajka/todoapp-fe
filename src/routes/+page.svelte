@@ -22,88 +22,76 @@
 </div>
 
 <style>
-  /* Basic styling - customize as needed */
+  /* Container with a modern gradient background */
   .landing-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background: linear-gradient(
-      to bottom right,
-      #6366f1,
-      #ec4899
-    ); /* Example gradient */
-    color: white;
-    font-family: "Arial", sans-serif; /* Example font */
-    overflow: hidden; /* Hide overflow for animations */
+    background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+    color: #fff;
+    font-family: "Roboto", sans-serif; /* Example modern font */
+    overflow: hidden;
+    margin: 0; /* Remove default margin */
+    padding: 0;
   }
 
+  /* Content fade-in animation */
   .landing-content {
+    max-width: 600px;
     text-align: center;
-    opacity: 0; /* Initially hidden for transition */
-    transform: translateY(20px); /* Initially slightly below */
+    opacity: 0;
+    transform: translateY(20px);
     transition:
-      opacity 0.8s ease,
-      transform 0.8s ease; /* Smooth transitions */
+      opacity 0.6s ease,
+      transform 0.6s ease;
   }
-
   .landing-content.show {
     opacity: 1;
     transform: translateY(0);
   }
 
-  h1 {
-    font-size: 3rem;
+  /* Headline styling */
+  .landing-content h1 {
+    font-size: 2.5rem;
     margin-bottom: 1rem;
   }
 
-  p {
-    font-size: 1.2rem;
+  /* Paragraph styling */
+  .landing-content p {
+    font-size: 1.125rem;
+    line-height: 1.5;
     margin-bottom: 2rem;
-    line-height: 1.6; /* Improve readability */
-    max-width: 600px; /* Limit text width for large screens */
   }
 
+  /* Button group */
   .cta-buttons {
     display: flex;
-    gap: 1rem; /* Add spacing between buttons */
+    gap: 1rem;
+    justify-content: center;
   }
 
-  button {
-    background-color: white;
-    color: #6366f1; /* Match the gradient */
-    padding: 0.8rem 1.5rem;
+  /* Modern button styling */
+  .cta-buttons button {
+    background-color: #fff;
+    color: #6366f1;
     border: none;
-    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
     font-size: 1rem;
-    font-weight: 600;
     cursor: pointer;
+    font-weight: 500;
     transition:
       background-color 0.3s ease,
-      color 0.3s ease,
-      transform 0.2s ease; /* Button transitions */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+      transform 0.2s ease;
   }
 
-  button:hover {
-    background-color: #f0f0f0; /* Slightly lighter background on hover */
-    transform: scale(1.05); /* Slight scale on hover */
+  /* Hover and active states */
+  .cta-buttons button:hover {
+    background-color: #f3f3f3;
   }
-
-  /* Responsive adjustments (example) */
-  @media (max-width: 768px) {
-    h1 {
-      font-size: 2.5rem;
-    }
-
-    p {
-      font-size: 1rem;
-    }
-
-    .cta-buttons {
-      flex-direction: column; /* Stack buttons vertically on smaller screens */
-      align-items: center;
-    }
+  .cta-buttons button:active {
+    transform: scale(0.95);
   }
 </style>
