@@ -1,48 +1,93 @@
 <script>
   import { goto } from "$app/navigation";
+  const apiBaseUrl =
+    import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
 
-  let name = "";
+  console.log("API Base URL:", apiBaseUrl);
+
   let email = "";
   let password = "";
   let confirmPassword = "";
+  let successMessage = "";
+  let errorMessage = "";
 
   // Placeholder for form submission (replace with your actual logic)
-  function handleRegister() {
+  async function handleRegister(event) {
+    event.preventDefault();
     // Your registration logic here
-    console.log("Registering:", name, email, password, confirmPassword);
+    console.log("Registering:", email, password, confirmPassword);
+    const payload = { email, password, confirmPassword };
+    try {
+      const response = await fetch(`${apiBaseUrl}/api/auth/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+      console.log(data);
+      if (response.ok) {
+        successMessage = data.message;
+        errorMessage = "";
+        //Clear form fields
+        email = "";
+        password = "";
+        confirmPassword = "";
+      } else {
+        successMessage = "";
+        console.error(
+          "Registration failed:",
+          response.status,
+          data.detail || "Unknown error"
+        );
+        errorMessage = data.detail || "Registration failed. Please try again.";
+      }
+    } catch (error) {
+      errorMessage = "Network error occurred";
+      console.error("Request error:", error);
+    }
   }
 </script>
 
 <div class="registration-container">
   <div class="registration-box">
     <h2>Register</h2>
+    <form
+      method="POST"
+      action={`${apiBaseUrl}/api/auth/register`}
+      enctype="application/json"
+      on:submit={handleRegister}
+    >
+      <div class="input-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" bind:value={email} required />
+      </div>
 
-    <div class="input-group">
-      <label for="name">Name:</label>
-      <input type="text" id="name" bind:value={name} required />
-    </div>
+      <div class="input-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" bind:value={password} required />
+      </div>
 
-    <div class="input-group">
-      <label for="email">Email:</label>
-      <input type="email" id="email" bind:value={email} required />
-    </div>
-
-    <div class="input-group">
-      <label for="password">Password:</label>
-      <input type="password" id="password" bind:value={password} required />
-    </div>
-
-    <div class="input-group">
-      <label for="confirm-password">Confirm Password:</label>
-      <input
-        type="password"
-        id="confirm-password"
-        bind:value={confirmPassword}
-        required
-      />
-    </div>
-
-    <button on:click={handleRegister}>Register</button>
+      <div class="input-group">
+        <label for="confirm-password">Confirm Password:</label>
+        <input
+          type="password"
+          id="confirm-password"
+          bind:value={confirmPassword}
+          required
+        />
+      </div>
+      {#if successMessage}
+        <div class="success">{successMessage}</div>
+      {/if}
+      {#if errorMessage}
+        <div class="error">{errorMessage}</div>
+      {/if}
+      <button on:click={handleRegister}>Register</button>
+    </form>
 
     <div class="login-link">
       Already have an account? <a
@@ -91,7 +136,6 @@
     font-weight: 500;
   }
 
-  input[type="text"],
   input[type="email"],
   input[type="password"] {
     width: 100%;
@@ -137,5 +181,19 @@
 
   .login-link a:hover {
     text-decoration: underline;
+  }
+  .success {
+    background-color: #d1f5d3;
+    color: #0f5132;
+    padding: 0.5rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+  .error {
+    background-color: #f8d7da;
+    color: #842029;
+    padding: 0.5rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
   }
 </style>
