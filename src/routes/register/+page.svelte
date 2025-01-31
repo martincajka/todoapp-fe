@@ -1,99 +1,48 @@
-<script>
-  import { goto } from "$app/navigation";
-  const apiBaseUrl =
-    import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
-
-  console.log("API Base URL:", apiBaseUrl);
-
-  let email = "";
-  let password = "";
-  let confirmPassword = "";
-  let successMessage = "";
-  let errorMessage = "";
-
-  // Placeholder for form submission (replace with your actual logic)
-  async function handleRegister(event) {
-    event.preventDefault();
-    // Your registration logic here
-    console.log("Registering:", email, password, confirmPassword);
-    const payload = { email, password, confirmPassword };
-    try {
-      const response = await fetch(`${apiBaseUrl}/api/auth/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await response.json();
-      console.log(data);
-      if (response.ok) {
-        successMessage = data.message;
-        errorMessage = "";
-        //Clear form fields
-        email = "";
-        password = "";
-        confirmPassword = "";
-      } else {
-        successMessage = "";
-        console.error(
-          "Registration failed:",
-          response.status,
-          data.detail || "Unknown error"
-        );
-        errorMessage = data.detail || "Registration failed. Please try again.";
-      }
-    } catch (error) {
-      errorMessage = "Network error occurred";
-      console.error("Request error:", error);
-    }
-  }
+<script lang="ts">
+  let { data, form } = $props();
 </script>
 
 <div class="registration-container">
   <div class="registration-box">
     <h2>Register</h2>
-    <form
-      method="POST"
-      action={`${apiBaseUrl}/api/auth/register`}
-      enctype="application/json"
-      on:submit={handleRegister}
-    >
+    <form class="form-content" method="POST">
       <div class="input-group">
         <label for="email">Email:</label>
-        <input type="email" id="email" bind:value={email} required />
+        <input
+          type="email"
+          id="email"
+          name="email"
+          value={form?.email ?? ""}
+          required
+        />
       </div>
 
       <div class="input-group">
         <label for="password">Password:</label>
-        <input type="password" id="password" bind:value={password} required />
+        <input type="password" id="password" name="password" required />
       </div>
 
       <div class="input-group">
-        <label for="confirm-password">Confirm Password:</label>
+        <label for="confirmPassword">Confirm Password:</label>
         <input
           type="password"
-          id="confirm-password"
-          bind:value={confirmPassword}
+          id="confirmPassword"
+          name="confirmPassword"
           required
         />
       </div>
-      {#if successMessage}
-        <div class="success">{successMessage}</div>
-      {/if}
-      {#if errorMessage}
-        <div class="error">{errorMessage}</div>
-      {/if}
-      <button on:click={handleRegister}>Register</button>
+      <div class="message-container">
+        {#if form?.success !== undefined}
+          <div class={form.success === true ? "success" : "error"}>
+            {form.message}
+          </div>
+        {/if}
+      </div>
+      <button type="submit">Register</button>
     </form>
 
     <div class="login-link">
-      Already have an account? <a
-        href="/login"
-        on:click|preventDefault={() => goto("/login")}>Login</a
-      >
+      Already have an account? <a href="/login">Login</a>
     </div>
   </div>
 </div>
@@ -126,8 +75,14 @@
     color: #6366f1; /* Match the gradient */
   }
 
+  .form-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
   .input-group {
-    margin-bottom: 1rem;
+    margin-bottom: 0;
   }
 
   label {
@@ -182,18 +137,30 @@
   .login-link a:hover {
     text-decoration: underline;
   }
-  .success {
-    background-color: #d1f5d3;
-    color: #0f5132;
-    padding: 0.5rem;
-    border-radius: 4px;
+
+  .message-container {
+    min-height: 64px; /* Fixed height for message area */
     margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
+
+  .success,
   .error {
-    background-color: #f8d7da;
-    color: #842029;
-    padding: 0.5rem;
+    padding: 0.75rem;
     border-radius: 4px;
-    margin-bottom: 1rem;
+    width: 100%;
+    text-align: center;
+  }
+
+  .success {
+    background-color: #dcfce7;
+    color: #166534;
+  }
+
+  .error {
+    background-color: #fee2e2;
+    color: #991b1b;
   }
 </style>
