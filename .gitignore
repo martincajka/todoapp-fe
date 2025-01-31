@@ -1,3 +1,7 @@
+# VSCode
+.vscode
+launch.json
+
 test-results
 node_modules
 
