@@ -1,7 +1,9 @@
 <script>
   import { goto } from "$app/navigation";
+  import { page } from "$app/stores";
 
-  let email = "";
+  let email = $page.url.searchParams.get("email") || "";
+  let verified = $page.url.searchParams.get("verified") || false;
   let password = "";
 
   function handleLogin() {
@@ -17,6 +19,12 @@
 <div class="login-container">
   <div class="login-box">
     <h2>Login</h2>
+
+    {#if verified}
+      <div class="success-message">
+        Registration successfully verified! Please log in.
+      </div>
+    {/if}
 
     <div class="input-group">
       <label for="email">Email:</label>
@@ -145,5 +153,15 @@
 
   .register-link a:hover {
     text-decoration: underline;
+  }
+
+  .success-message {
+    background-color: #dcfce7;
+    color: #166534;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-size: 1rem;
   }
 </style>
