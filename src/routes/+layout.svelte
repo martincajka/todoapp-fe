@@ -11,6 +11,11 @@
       isOpen = false;
     }
   }
+
+  function onSelectLanguage(lang) {
+    locale = lang;
+    isOpen = false;
+  }
 </script>
 
 <svelte:window on:click={handleClickOutside} />
@@ -27,14 +32,14 @@
           <button
             class="dropdown-item"
             class:active={locale === "en"}
-            onclick={() => (locale = "en")}
+            onclick={() => onSelectLanguage("en")}
           >
             English
           </button>
           <button
             class="dropdown-item"
             class:active={locale === "sk"}
-            onclick={() => (locale = "sk")}
+            onclick={() => onSelectLanguage("sk")}
           >
             Slovensky
           </button>
@@ -52,73 +57,84 @@
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
-    background-color: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      sans-serif;
   }
 
   .nav-brand {
     font-size: 1.5rem;
-    font-weight: 600;
-    color: #6366f1;
-    font-family: "Poppins", sans-serif;
-  }
-
-  .language-switcher {
-    position: relative;
+    font-weight: 700;
+    color: #4f46e5;
+    letter-spacing: -0.02em;
   }
 
   .dropdown-trigger {
     padding: 0.5rem 1rem;
-    border: 1px solid #6366f1;
-    background: transparent;
-    color: #6366f1;
-    border-radius: 4px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #4f46e5;
+    border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s ease;
+    font-weight: 500;
+    font-size: 0.875rem;
   }
 
   .dropdown-trigger:hover {
-    background: #6366f1;
-    color: white;
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    transform: translateY(-1px);
   }
 
   .dropdown-menu {
     position: absolute;
-    top: 100%;
+    top: calc(100% + 0.5rem);
     right: 0;
-    margin-top: 0.5rem;
     background: white;
-    border-radius: 4px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
     overflow: hidden;
+    min-width: 160px;
     animation: slideDown 0.2s ease;
   }
 
   .dropdown-item {
     display: block;
     width: 100%;
-    padding: 0.75rem 1.5rem;
+    padding: 0.75rem 1rem;
+    text-align: left;
     border: none;
     background: transparent;
-    color: #333;
-    text-align: left;
+    color: #4b5563;
+    font-size: 0.875rem;
+    font-weight: 500;
     cursor: pointer;
-    transition: background 0.2s ease;
+    transition: all 0.2s ease;
   }
 
   .dropdown-item:hover {
-    background: #f3f4f6;
+    background: #f8fafc;
+    color: #4f46e5;
   }
 
   .dropdown-item.active {
-    color: #6366f1;
-    background: #f0f1ff;
+    color: #4f46e5;
+    background: #f5f3ff;
   }
 
   @keyframes slideDown {
     from {
       opacity: 0;
-      transform: translateY(-10px);
+      transform: translateY(-8px);
     }
     to {
       opacity: 1;
