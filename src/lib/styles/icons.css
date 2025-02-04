@@ -1,0 +1,26 @@
+.small {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .medium {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .large {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .primary {
+    accent-color: #6366f1;
+  }
+
+  .secondary {
+    accent-color: #f8fafc;
+  }
+
+  .danger {
+    color: #ef4444;
+  }
