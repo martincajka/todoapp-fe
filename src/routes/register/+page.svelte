@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Button from "$btns/Button.svelte";
   let { data, form } = $props();
 </script>
 
@@ -38,7 +39,7 @@
           </div>
         {/if}
       </div>
-      <button type="submit">Register</button>
+      <Button type="submit" fullWidth>Register</Button>
     </form>
 
     <div class="login-link">
@@ -99,27 +100,6 @@
     border-radius: 4px;
     box-sizing: border-box;
     font-size: 1rem;
-  }
-
-  button {
-    background-color: #6366f1;
-    color: white;
-    padding: 0.8rem 1.5rem;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition:
-      background-color 0.3s ease,
-      transform 0.2s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    width: 100%; /* Make the button full width */
-  }
-
-  button:hover {
-    background-color: #5258da; /* Slightly darker on hover */
-    transform: scale(1.02);
   }
 
   .login-link {

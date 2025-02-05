@@ -14,29 +14,21 @@
   ul {
     list-style: none;
     padding: 0;
+    max-width: 800px;
   }
 
   .todo {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 0.5em 0;
-    padding: 1em;
-    transition: box-shadow 0.3s ease;
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .todo:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  }
-
-  .highlight {
-    animation: fadeHighlight 3s forwards;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 0.5rem;
+    background: white;
+    border-top: 1px solid #e2e8f0;
+    transition: all 0.2s ease;
   }
 
   .done {
-    opacity: 0.4;
+    text-decoration: line-through;
+    background: #f8fafc;
   }
 </style>
