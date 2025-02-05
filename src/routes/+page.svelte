@@ -29,9 +29,12 @@
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+    background: linear-gradient(
+      135deg,
+      var(--color-primary) 0%,
+      var(--color-background) 100%
+    );
     color: #fff;
-    font-family: "Roboto", sans-serif; /* Example modern font */
     overflow: hidden;
     margin: 0; /* Remove default margin */
     padding: 0;
@@ -52,15 +55,11 @@
     transform: translateY(0);
   }
 
-  /* Headline styling */
   .landing-content h1 {
-    font-size: 2.5rem;
     margin-bottom: 1rem;
   }
 
-  /* Paragraph styling */
   .landing-content p {
-    font-size: 1.125rem;
     line-height: 1.5;
     margin-bottom: 2rem;
   }
@@ -74,14 +73,13 @@
 
   /* Modern button styling */
   .cta-buttons button {
-    background-color: #fff;
-    color: #6366f1;
+    background-color: var(--slate-50);
+    color: var(--color-primary);
     border: none;
     padding: 0.75rem 1.5rem;
     border-radius: 4px;
     font-size: 1rem;
     cursor: pointer;
-    font-weight: 500;
     transition:
       background-color 0.3s ease,
       transform 0.2s ease;
@@ -89,7 +87,7 @@
 
   /* Hover and active states */
   .cta-buttons button:hover {
-    background-color: #f3f3f3;
+    background-color: var(--slate-200);
   }
   .cta-buttons button:active {
     transform: scale(0.95);

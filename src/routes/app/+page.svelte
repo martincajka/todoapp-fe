@@ -124,7 +124,7 @@
     <div class="todo-header">
       <input type="checkbox" class="todo-checkbox" bind:checked={d.done} />
       <div class="todo-content">
-        <input type="text" class="todo-text-input" bind:value={d.text} />
+        <span class="text-label">{d.text}</span>
       </div>
       <div class="todo-assignee">
         <select class="assign-select" bind:value={d.assignee}>
@@ -251,7 +251,6 @@
   .text-label {
     font-size: 1rem;
     padding: 0.75rem;
-    font-size: 1rem;
   }
 
   .new-todo-box {
@@ -326,22 +325,6 @@
   .action-btn:hover {
     transform: scale(1.2);
   }
-
-  /* .secondary-button {
-    padding: 0.75rem 1.5rem;
-    background-color: #f8fafc;
-    color: #4f46e5;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-
-  .secondary-button:hover {
-    background-color: #f1f5f9;
-    transform: translateY(-1px);
-  } */
 
   .assign-select {
     padding: 0.75rem;

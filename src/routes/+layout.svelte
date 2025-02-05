@@ -1,9 +1,12 @@
 <script>
   import "../app.css";
+  import Theme from "$icons/Theme.svelte";
+  import Button from "$btns/Button.svelte";
   let { children } = $props();
 
   let locale = $state("en");
   let isOpen = $state(false);
+  let darkMode = $state(false);
 
   function handleClickOutside(event) {
     const dropdown = document.querySelector(".language-switcher");
@@ -16,6 +19,14 @@
     locale = lang;
     isOpen = false;
   }
+
+  function toggleTheme() {
+    darkMode = !darkMode;
+    window.document.documentElement.setAttribute(
+      "data-theme",
+      darkMode ? "dark" : "light"
+    );
+  }
 </script>
 
 <svelte:window on:click={handleClickOutside} />
@@ -24,6 +35,9 @@
   <div class="nav-brand">TodoApp</div>
   <div class="nav-items">
     <div class="language-switcher">
+      <Button variant="ghost" onclick={toggleTheme}
+        ><Theme iconStyle="small primary" />
+      </Button>
       <button class="dropdown-trigger" onclick={() => (isOpen = !isOpen)}>
         {locale?.toUpperCase() || "EN"} ▼
       </button>
@@ -57,14 +71,16 @@
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
-    background: rgba(255, 255, 255, 0.95);
+    background: linear-gradient(
+      135deg,
+      var(--slate-50) 0%,
+      var(--color-primary) 100%
+    );
     backdrop-filter: blur(10px);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     position: sticky;
     top: 0;
     z-index: 1000;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-      sans-serif;
   }
 
   .nav-brand {

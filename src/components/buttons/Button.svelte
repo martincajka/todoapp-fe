@@ -23,7 +23,6 @@
     border: none;
     border-radius: 8px;
     font-size: 1rem;
-    font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -42,6 +41,13 @@
   .danger {
     background-color: #ef4444;
     color: white;
+  }
+
+  .ghost {
+    background: transparent;
+    color: var(--color-text);
+    padding: 0.5rem;
+    box-shadow: none;
   }
 
   .full-width {
