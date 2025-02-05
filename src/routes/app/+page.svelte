@@ -1,8 +1,14 @@
-<script>
+<script lang="ts">
   import { text } from "@sveltejs/kit";
   import { todos } from "$lib/data.svelte.js";
   import { assignees } from "$lib/data.svelte.js";
   import FilteredTodos from "./FilteredTodos.svelte";
+  import Info from "$icons/Info.svelte";
+  import Delete from "$icons/Delete.svelte";
+  import Edit from "$icons/Edit.svelte";
+  import Plus from "$icons/Plus.svelte";
+  import Button from "$btns/Button.svelte";
+  import { slide } from "svelte/transition";
 
   let newTodo = $state({ text: "" });
   let expandedTodo = $state(null); // Track the currently expanded todo item
@@ -72,65 +78,122 @@
   let allTodos = $derived(todos.filter((t) => !t.deleted).length);
 </script>
 
-<main>
-  <div>
-    <h1>todos</h1>
-    <input type="text" placeholder="Search" bind:value={search} />
-    <div class="todo-input">
-      <button onclick={add}>+</button>
+<main class="todo-container">
+  <div class="todo-box">
+    <h1>Your day</h1>
+
+    <div class="search-box">
       <input
         type="text"
-        class="todo-label"
+        placeholder="Search todos..."
+        bind:value={search}
+        class="text-input"
+      />
+    </div>
+
+    <div class="new-todo-box">
+      <input
+        type="text"
+        class="text-input"
         placeholder="What needs to be done?"
         bind:value={newTodo.text}
         onkeydown={handleKeydown}
       />
+      <Button onclick={add}><Plus iconStyle="medium primary"></Plus></Button>
     </div>
-    <FilteredTodos data={displayActive()} row={todoRow} />
-    <p>{remainingTodos} of {allTodos} remaining</p>
+
+    <div class="current-todo-box">
+      <FilteredTodos data={displayActive()} row={todoRow} />
+    </div>
+
+    <div class="todo-stats">
+      <p>{remainingTodos} of {allTodos} remaining</p>
+    </div>
+
     {#if allTodos !== remainingTodos}
-      <h5>Completed</h5>
-      <button onclick={clear}> Clear completed </button>
-      <FilteredTodos data={displayCompleted()} row={doneRow} />
+      <div class="done-todo-box">
+        <Button variant="danger" onclick={clear}>Delete completed</Button>
+        <FilteredTodos data={displayCompleted()} row={doneRow} />
+      </div>
     {/if}
   </div>
 </main>
 
 {#snippet todoRow(d)}
-  <div class="todo-header">
-    <input type="checkbox" bind:checked={d.done} />
-    <input type="text" class="todo-label" bind:value={d.text} />
-    <button onclick={() => toggleExpand(d)}>More</button>
-    <select bind:value={d.assignee}>
-      {#each assignees as assignee}
-        <option value={assignee}>
-          {assignee.text}
-        </option>
-      {/each}
-    </select>
-    <button>Edit</button>
-    <button onclick={deleteTodo(d)}>x</button>
-  </div>
-  {#if expandedTodo === d}
-    <div class="details">
-      <p>Created At: {new Date(d.createdAt).toLocaleString()}</p>
-      {#if d.deadline}
-        <p>Deadline: {new Date(d.deadline).toLocaleString()}</p>
-      {/if}
+  <div class="todo-wrapper">
+    <div class="todo-header">
+      <input type="checkbox" class="todo-checkbox" bind:checked={d.done} />
+      <div class="todo-content">
+        <input type="text" class="todo-text-input" bind:value={d.text} />
+      </div>
+      <div class="todo-assignee">
+        <select class="assign-select" bind:value={d.assignee}>
+          {#each assignees as assignee}
+            <option value={assignee}>
+              {assignee.text}
+            </option>
+          {/each}
+        </select>
+      </div>
+      <div class="todo-actions">
+        <button
+          class="action-btn"
+          onclick={() => toggleExpand(d)}
+          aria-label="More info"
+        >
+          <Info iconStyle="small primary" />
+        </button>
+        <button class="action-btn" aria-label="Edit item">
+          <Edit iconStyle="small primary" />
+        </button>
+        <button
+          onclick={deleteTodo(d)}
+          class="action-btn"
+          aria-label="Delete item"
+        >
+          <Delete iconStyle="small danger" />
+        </button>
+      </div>
     </div>
-  {/if}
+    {#if expandedTodo === d}
+      <div class="todo-more-info" transition:slide>
+        <p>Created At: {new Date(d.createdAt).toLocaleString()}</p>
+        {#if d.deadline}
+          <p>Deadline: {new Date(d.deadline).toLocaleString()}</p>
+        {/if}
+      </div>
+    {/if}
+  </div>
 {/snippet}
 
 {#snippet doneRow(d)}
   <div class="todo-header">
-    <input type="checkbox" bind:checked={d.done} />
-    <span class="todo-label">{d.text}</span>
-    <button onclick={() => toggleExpand(d)}>More</button>
-    <span>{d.assignee.text}</span>
-    <button onclick={deleteTodo(d)}>x</button>
+    <input type="checkbox" class="todo-checkbox" bind:checked={d.done} />
+    <div class="todo-content">
+      <span class="text-label">{d.text}</span>
+    </div>
+    <div class="todo-assignee">
+      <span class="text-label">{d.assignee.text}</span>
+    </div>
+    <div class="todo-actions">
+      <button
+        class="action-btn"
+        onclick={() => toggleExpand(d)}
+        aria-label="More info"
+      >
+        <Info iconStyle="small primary" /></button
+      >
+      <button
+        class="action-btn"
+        onclick={deleteTodo(d)}
+        aria-label="Delete item"
+      >
+        <Delete iconStyle="small danger" /></button
+      >
+    </div>
   </div>
   {#if expandedTodo === d}
-    <div class="details">
+    <div>
       <p>Created At: {new Date(d.createdAt).toLocaleString()}</p>
       {#if d.deadline}
         <p>Deadline: {new Date(d.deadline).toLocaleString()}</p>
@@ -140,51 +203,162 @@
 {/snippet}
 
 <style>
-  main {
-    text-align: center;
-    padding: 1em;
-    max-width: 800px;
-    margin: 0 auto;
-  }
-
-  .todo-label {
-    background-color: transparent;
-    flex: 1;
-    padding: 0.5em;
-    margin: -0.2em 0;
-    border: none;
-    text-align: left;
-  }
-
-  @keyframes fadeHighlight {
-    0% {
-      background-color: yellow;
-    }
-    100% {
-      background-color: #fff;
-    }
-  }
-
-  .todo-input {
+  .todo-container {
     display: flex;
-    align-items: center;
-    margin: 0.5em 0;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    background-color: #f8fafc;
+  }
+
+  .todo-box {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 800px;
+  }
+
+  h1 {
+    color: #4f46e5;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .search-box {
+    margin-bottom: 1.5rem;
+    width: 100%;
+    display: flex;
+  }
+
+  .text-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+  }
+
+  .text-input:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  }
+
+  .text-label {
+    font-size: 1rem;
+    padding: 0.75rem;
+    font-size: 1rem;
+  }
+
+  .new-todo-box {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .current-todo-box {
+    margin-bottom: 2rem;
+  }
+
+  .todo-wrapper {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    width: 100%;
   }
 
   .todo-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     width: 100%;
+    gap: 1rem;
   }
 
-  .details {
-    margin-top: 0.5em;
-    width: auto;
-    text-align: left;
+  .todo-checkbox {
+    flex: 0 0 auto;
+    width: 1.25rem;
+    height: 1.25rem;
+    accent-color: #6366f1;
   }
 
-  .details p {
-    margin: 0.5em 0 0 0;
+  .todo-content {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .todo-text-input {
+    width: 90%;
+    font-size: 1rem;
+    padding: 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+  }
+
+  .todo-assignee {
+    flex: 0 0 auto;
+    display: flex;
+    margin-left: auto;
+  }
+
+  .todo-actions {
+    flex: 0 0 auto;
+    display: flex;
+    margin-left: auto;
+  }
+
+  .todo-more-info {
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  .action-btn {
+    padding: 0.5rem 0.5rem;
+    border: none;
+    background: transparent;
+    color: #6366f1;
+    font-size: 0.875rem;
+  }
+
+  .action-btn:hover {
+    transform: scale(1.2);
+  }
+
+  /* .secondary-button {
+    padding: 0.75rem 1.5rem;
+    background-color: #f8fafc;
+    color: #4f46e5;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .secondary-button:hover {
+    background-color: #f1f5f9;
+    transform: translateY(-1px);
+  } */
+
+  .assign-select {
+    padding: 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+  }
+
+  .todo-stats {
+    text-align: center;
+    color: #64748b;
+    margin: 1.5rem 0;
+  }
+
+  .done-todo-box {
+    padding-top: 1rem;
+    border-top: 1px solid #e2e8f0;
   }
 </style>
