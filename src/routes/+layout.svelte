@@ -1,7 +1,7 @@
 <script>
   import "../app.css";
   import Theme from "$icons/Theme.svelte";
-  import Button from "$btns/Button.svelte";
+  import IconButton from "$btns/IconButton.svelte";
   let { children } = $props();
 
   let locale = $state("en");
@@ -35,9 +35,9 @@
   <div class="nav-brand">TodoApp</div>
   <div class="nav-items">
     <div class="language-switcher">
-      <Button variant="ghost" onclick={toggleTheme}
-        ><Theme iconStyle="small primary" />
-      </Button>
+      <IconButton variant="ghost" onclick={toggleTheme}
+        ><Theme iconStyle="medium primary" />
+      </IconButton>
       <button class="dropdown-trigger" onclick={() => (isOpen = !isOpen)}>
         {locale?.toUpperCase() || "EN"} ▼
       </button>
@@ -71,11 +71,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
-    background: linear-gradient(
-      135deg,
-      var(--slate-50) 0%,
-      var(--color-primary) 100%
-    );
+    background: var(--color-background);
     backdrop-filter: blur(10px);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     position: sticky;
@@ -86,7 +82,7 @@
   .nav-brand {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #4f46e5;
+    color: var(--color-text);
     letter-spacing: -0.02em;
   }
 

@@ -8,6 +8,7 @@
   import Edit from "$icons/Edit.svelte";
   import Plus from "$icons/Plus.svelte";
   import Button from "$btns/Button.svelte";
+  import IconButton from "$btns/IconButton.svelte";
   import { slide } from "svelte/transition";
 
   let newTodo = $state({ text: "" });
@@ -136,23 +137,19 @@
         </select>
       </div>
       <div class="todo-actions">
-        <button
-          class="action-btn"
-          onclick={() => toggleExpand(d)}
-          aria-label="More info"
-        >
+        <IconButton aria-label="More info" onclick={() => toggleExpand(d)}>
           <Info iconStyle="small primary" />
-        </button>
-        <button class="action-btn" aria-label="Edit item">
+        </IconButton>
+        <IconButton aria-label="Edit item">
           <Edit iconStyle="small primary" />
-        </button>
-        <button
-          onclick={deleteTodo(d)}
-          class="action-btn"
+        </IconButton>
+        <IconButton
+          variant="danger"
           aria-label="Delete item"
+          onclick={deleteTodo(d)}
         >
           <Delete iconStyle="small danger" />
-        </button>
+        </IconButton>
       </div>
     </div>
     {#if expandedTodo === d}
@@ -176,20 +173,16 @@
       <span class="text-label">{d.assignee.text}</span>
     </div>
     <div class="todo-actions">
-      <button
-        class="action-btn"
-        onclick={() => toggleExpand(d)}
-        aria-label="More info"
-      >
-        <Info iconStyle="small primary" /></button
-      >
-      <button
-        class="action-btn"
-        onclick={deleteTodo(d)}
+      <IconButton aria-label="More info" onclick={() => toggleExpand(d)}>
+        <Info iconStyle="small primary" />
+      </IconButton>
+      <IconButton
+        variant="danger"
         aria-label="Delete item"
+        onclick={deleteTodo(d)}
       >
-        <Delete iconStyle="small danger" /></button
-      >
+        <Delete iconStyle="small danger" />
+      </IconButton>
     </div>
   </div>
   {#if expandedTodo === d}
@@ -289,14 +282,6 @@
     min-width: 0;
   }
 
-  .todo-text-input {
-    width: 90%;
-    font-size: 1rem;
-    padding: 0.75rem;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-  }
-
   .todo-assignee {
     flex: 0 0 auto;
     display: flex;
@@ -312,18 +297,6 @@
   .todo-more-info {
     width: 100%;
     margin-top: 1rem;
-  }
-
-  .action-btn {
-    padding: 0.5rem 0.5rem;
-    border: none;
-    background: transparent;
-    color: #6366f1;
-    font-size: 0.875rem;
-  }
-
-  .action-btn:hover {
-    transform: scale(1.2);
   }
 
   .assign-select {
