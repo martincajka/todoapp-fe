@@ -53,12 +53,15 @@
   
   --color-primary: var(--indigo-500);
   --color-primary-hover: var(--indigo-400);
+  --color-primary-text: white;
   
   --color-secondary: var(--slate-600);
   --color-secondary-hover: var(--slate-500);
+  --color-secondary-text: white;
   
   --color-danger: var(--red-500);
   --color-danger-hover: var(--red-400);
+  --color-danger-text: white;
 
   --color-border: var(--slate-600);
   }

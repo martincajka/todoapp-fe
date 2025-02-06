@@ -1,8 +1,26 @@
-<script>
+<script lang="ts">
+  import { onMount } from "svelte";
   import "../app.css";
   import Theme from "$icons/Theme.svelte";
   import IconButton from "$btns/IconButton.svelte";
   let { children } = $props();
+
+  // Default theme is "light"
+  let theme = "light";
+
+  // Use onMount to access localStorage on the client side only
+  onMount(() => {
+    const storedTheme = localStorage.getItem("theme") || "light";
+    theme = storedTheme;
+    document.documentElement.setAttribute("data-theme", theme);
+  });
+
+  // Toggle between light and dark mode
+  function toggleTheme() {
+    theme = theme === "light" ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }
 
   let locale = $state("en");
   let isOpen = $state(false);
@@ -18,14 +36,6 @@
   function onSelectLanguage(lang) {
     locale = lang;
     isOpen = false;
-  }
-
-  function toggleTheme() {
-    darkMode = !darkMode;
-    window.document.documentElement.setAttribute(
-      "data-theme",
-      darkMode ? "dark" : "light"
-    );
   }
 </script>
 
@@ -62,7 +72,6 @@
     </div>
   </div>
 </nav>
-
 {@render children()}
 
 <style>
