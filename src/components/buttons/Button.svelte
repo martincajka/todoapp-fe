@@ -29,18 +29,18 @@
   }
 
   .primary {
-    background-color: #6366f1;
-    color: white;
+    background-color: var(--color-primary);
+    color: var(--color-primary-text);
   }
 
   .secondary {
-    background-color: #64748b;
-    color: white;
+    background-color: var(--color-secondary);
+    color: var(--color-secondary-text);
   }
 
   .danger {
-    background-color: #ef4444;
-    color: white;
+    background-color: var(--color-danger);
+    color: var(--color-danger-text);
   }
 
   .ghost {
@@ -59,15 +59,15 @@
   }
 
   .primary:hover:not(:disabled) {
-    background-color: #4f46e5;
+    background-color: var(--color-primary-hover);
   }
 
   .secondary:hover:not(:disabled) {
-    background-color: #475569;
+    background-color: var(--color-secondary-hover);
   }
 
   .danger:hover:not(:disabled) {
-    background-color: #dc2626;
+    background-color: var(--color-danger-hover);
   }
 
   .button:disabled {
