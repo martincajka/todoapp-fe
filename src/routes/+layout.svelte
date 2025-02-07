@@ -3,6 +3,7 @@
   import "../app.css";
   import Theme from "$icons/Theme.svelte";
   import IconButton from "$btns/IconButton.svelte";
+  import Language from "$icons/Language.svelte";
   let { children } = $props();
 
   // Default theme is "light"
@@ -42,15 +43,19 @@
 <svelte:window on:click={handleClickOutside} />
 
 <nav class="navbar">
-  <div class="nav-brand">TodoApp</div>
+  <a href="/" class="nav-brand">TodoApp</a>
   <div class="nav-items">
+    <IconButton variant="ghost" onclick={toggleTheme}
+      ><Theme iconStyle="medium primary" />
+    </IconButton>
     <div class="language-switcher">
-      <IconButton variant="ghost" onclick={toggleTheme}
-        ><Theme iconStyle="medium primary" />
+      <IconButton
+        variant="ghost"
+        iconStyle="medium primary"
+        onclick={() => (isOpen = !isOpen)}
+        ><Language iconStyle="medium primary" />
+        {locale}
       </IconButton>
-      <button class="dropdown-trigger" onclick={() => (isOpen = !isOpen)}>
-        {locale?.toUpperCase() || "EN"} ▼
-      </button>
       {#if isOpen}
         <div class="dropdown-menu">
           <button
@@ -72,9 +77,28 @@
     </div>
   </div>
 </nav>
-{@render children()}
+<div class="landing-container">
+  {@render children()}
+</div>
 
 <style>
+  .landing-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(
+      135deg,
+      var(--color-primary) 0%,
+      var(--color-background) 100%
+    );
+    color: #fff;
+    overflow: hidden;
+    margin: 0; /* Remove default margin */
+    padding: 0;
+  }
+
   .navbar {
     display: flex;
     justify-content: space-between;
@@ -88,44 +112,33 @@
     z-index: 1000;
   }
 
+  .nav-items {
+    display: flex;
+    gap: 1rem;
+  }
+
   .nav-brand {
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--color-text);
+    color: var(--color-text-header);
     letter-spacing: -0.02em;
   }
 
-  .dropdown-trigger {
-    padding: 0.5rem 1rem;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    color: #4f46e5;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-weight: 500;
-    font-size: 0.875rem;
-  }
-
-  .dropdown-trigger:hover {
-    background: #f1f5f9;
-    border-color: #cbd5e1;
-    transform: translateY(-1px);
+  .nav-brand:hover {
+    text-decoration: none;
   }
 
   .dropdown-menu {
     position: absolute;
-    top: calc(100% + 0.5rem);
+    top: calc(100%);
     right: 0;
-    background: white;
-    border-radius: 8px;
-    border: 1px solid #e2e8f0;
+    background: var(--color-surface);
     box-shadow:
       0 4px 6px -1px rgba(0, 0, 0, 0.1),
       0 2px 4px -1px rgba(0, 0, 0, 0.06);
     overflow: hidden;
     min-width: 160px;
-    animation: slideDown 0.2s ease;
+    animation: slideDown 0.1s ease;
   }
 
   .dropdown-item {
@@ -134,8 +147,8 @@
     padding: 0.75rem 1rem;
     text-align: left;
     border: none;
-    background: transparent;
-    color: #4b5563;
+    background: var(--color-surface);
+    color: var(--color-text);
     font-size: 0.875rem;
     font-weight: 500;
     cursor: pointer;
@@ -143,13 +156,14 @@
   }
 
   .dropdown-item:hover {
-    background: #f8fafc;
-    color: #4f46e5;
+    background: var(--color-primary);
+    color: var(--color-text);
   }
 
   .dropdown-item.active {
-    color: #4f46e5;
-    background: #f5f3ff;
+    color: var(--color-text);
+    border-left: solid;
+    border-color: var(--color-primary);
   }
 
   @keyframes slideDown {

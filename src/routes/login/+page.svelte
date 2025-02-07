@@ -48,11 +48,11 @@
       <Button type="submit" fullWidth>Login</Button>
     </form>
 
-    <div class="forgot-password-link">
+    <div class="link-container">
       <a href="/forgot-password">Forgot Password?</a>
     </div>
 
-    <div class="register-link">
+    <div class="link-container">
       Don't have an account? <a href="/register">Register</a>
     </div>
   </div>
@@ -65,25 +65,22 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(to bottom right, #6366f1, #ec4899);
-    color: white;
-    font-family: "Arial", sans-serif;
     overflow: hidden;
   }
 
   .login-box {
-    background-color: white;
+    background-color: var(--color-surface);
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 400px;
-    color: #333;
+    color: var(--color-text);
   }
 
   h2 {
     text-align: center;
     margin-bottom: 1.5rem;
-    color: #6366f1;
+    color: var(--color-text-header);
   }
 
   .input-group {
@@ -100,48 +97,21 @@
   input[type="password"] {
     width: 100%;
     padding: 0.8rem;
-    border: 1px solid #ccc;
+    border: 1px solid var(--color-border);
     border-radius: 4px;
     box-sizing: border-box;
     font-size: 1rem;
   }
 
-  .forgot-password-link {
+  .link-container {
     margin-top: 1rem;
     text-align: center;
-    color: #6366f1;
-  }
-
-  .forgot-password-link a {
-    color: inherit;
-    text-decoration: none;
-    font-weight: 500;
-  }
-
-  .forgot-password-link a:hover {
-    text-decoration: underline;
-  }
-
-  .register-link {
-    /* Added class for the register link */
-    margin-top: 1rem;
-    text-align: center;
-    color: #6366f1;
-  }
-
-  .register-link a {
-    color: inherit;
-    text-decoration: none;
-    font-weight: 500;
-  }
-
-  .register-link a:hover {
-    text-decoration: underline;
+    color: var(--color-primary);
   }
 
   .success-message {
-    background-color: #dcfce7;
-    color: #166534;
+    background-color: var(--color-success);
+    color: var(--color-success-text);
     padding: 1rem;
     border-radius: 6px;
     margin-bottom: 1rem;
@@ -150,8 +120,8 @@
   }
 
   .error-message {
-    background-color: #fef2f2;
-    color: #b91c1c;
+    background-color: var(--color-danger);
+    color: var(--color-danger-text);
     padding: 1rem;
     border-radius: 6px;
     margin-bottom: 1rem;

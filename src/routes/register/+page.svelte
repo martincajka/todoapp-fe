@@ -34,7 +34,9 @@
       </div>
       <div class="message-container">
         {#if form?.success !== undefined}
-          <div class={form.success === true ? "success" : "error"}>
+          <div
+            class={form.success === true ? "success-message" : "error-message"}
+          >
             {form.message}
           </div>
         {/if}
@@ -42,7 +44,7 @@
       <Button type="submit" fullWidth>Register</Button>
     </form>
 
-    <div class="login-link">
+    <div class="link-container">
       Already have an account? <a href="/login">Login</a>
     </div>
   </div>
@@ -55,25 +57,16 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(to bottom right, #6366f1, #ec4899);
-    color: white;
-    font-family: "Arial", sans-serif;
     overflow: hidden;
   }
 
   .registration-box {
-    background-color: white;
+    background-color: var(--color-surface);
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 400px; /* Adjust width as needed */
-    color: #333; /* Darker text color inside the box */
-  }
-
-  h2 {
-    text-align: center;
-    margin-bottom: 1.5rem;
-    color: #6366f1; /* Match the gradient */
+    width: 400px;
+    color: var(--color-text);
   }
 
   .form-content {
@@ -92,55 +85,62 @@
     font-weight: 500;
   }
 
+  .message-container {
+    min-height: 64px; /* Fixed height for message area */
+    margin-bottom: 1rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--color-text-header);
+  }
+
+  .input-group {
+    margin-bottom: 1rem;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+
   input[type="email"],
   input[type="password"] {
     width: 100%;
     padding: 0.8rem;
-    border: 1px solid #ccc;
+    border: 1px solid var(--color-border);
     border-radius: 4px;
     box-sizing: border-box;
     font-size: 1rem;
   }
 
-  .login-link {
+  .link-container {
     margin-top: 1rem;
     text-align: center;
-    color: #6366f1;
+    color: var(--color-primary);
   }
 
-  .login-link a {
-    color: inherit;
-    text-decoration: none;
-    font-weight: 500;
-  }
-
-  .login-link a:hover {
-    text-decoration: underline;
-  }
-
-  .message-container {
-    min-height: 64px; /* Fixed height for message area */
+  .success-message {
+    background-color: var(--color-success);
+    color: var(--color-success-text);
+    padding: 1rem;
+    border-radius: 6px;
     margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .success,
-  .error {
-    padding: 0.75rem;
-    border-radius: 4px;
-    width: 100%;
     text-align: center;
+    font-size: 1rem;
   }
 
-  .success {
-    background-color: #dcfce7;
-    color: #166534;
-  }
-
-  .error {
-    background-color: #fee2e2;
-    color: #991b1b;
+  .error-message {
+    background-color: var(--color-danger);
+    color: var(--color-danger-text);
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-size: 0.875rem;
   }
 </style>

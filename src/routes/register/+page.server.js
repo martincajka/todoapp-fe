@@ -40,7 +40,11 @@ export const actions ={
             message: data.message};
     } catch (error) {
         console.error("An error occurred", error);
-        return {message: "An error occurred"};
+        return {
+            success: false,
+            message: "An error occurred",
+            email: email
+        };
     }
 }
 }

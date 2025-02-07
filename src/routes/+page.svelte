@@ -6,24 +6,25 @@
   setTimeout(() => (showContent = true), 500); // Delay content reveal
 </script>
 
-<div class="landing-container">
-  <div class="landing-content" class:show={showContent}>
-    <h1>Your Awesome ToDo App</h1>
-    <p>
-      Organize your tasks, track your progress, and achieve your goals with our
-      intuitive and powerful ToDo app. Get started today and experience the
-      difference!
-    </p>
-    <div class="cta-buttons">
-      <button on:click={() => goto("/login")}>Login</button>
-      <button on:click={() => goto("/register")}>Register</button>
-    </div>
+<!-- <div class="landing-container"> -->
+<div class="landing-content" class:show={showContent}>
+  <h1>Your Awesome ToDo App</h1>
+  <p>
+    Organize your tasks, track your progress, and achieve your goals with our
+    intuitive and powerful ToDo app. Get started today and experience the
+    difference!
+  </p>
+  <div class="cta-buttons">
+    <button on:click={() => goto("/login")}>Login</button>
+    <button on:click={() => goto("/register")}>Register</button>
   </div>
 </div>
 
+<!-- </div> -->
+
 <style>
   /* Container with a modern gradient background */
-  .landing-container {
+  /* .landing-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -36,9 +37,9 @@
     );
     color: #fff;
     overflow: hidden;
-    margin: 0; /* Remove default margin */
-    padding: 0;
-  }
+    margin: 0; 
+  padding: 0;
+  } */
 
   /* Content fade-in animation */
   .landing-content {

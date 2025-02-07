@@ -1,5 +1,6 @@
-<script>
+<script lang="ts">
   import { goto } from "$app/navigation";
+  import Button from "$btns/Button.svelte";
 
   let email = "";
 
@@ -21,9 +22,9 @@
       <input type="email" id="email" bind:value={email} required />
     </div>
 
-    <button on:click={handleResetPassword}>Reset Password</button>
+    <Button type="submit" fullWidth>Reset password</Button>
 
-    <div class="login-link">
+    <div class="link-container">
       <a href="/login" on:click|preventDefault={() => goto("/login")}
         >Back to Login</a
       >
@@ -38,25 +39,22 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(to bottom right, #6366f1, #ec4899);
-    color: white;
-    font-family: "Arial", sans-serif;
     overflow: hidden;
   }
 
   .forgot-password-box {
-    background-color: white;
+    background-color: var(--color-surface);
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 400px;
-    color: #333;
+    color: var(--color-text);
   }
 
   h2 {
     text-align: center;
     margin-bottom: 1.5rem;
-    color: #6366f1;
+    color: var(--color-text-header);
   }
 
   .input-group {
@@ -72,46 +70,35 @@
   input[type="email"] {
     width: 100%;
     padding: 0.8rem;
-    border: 1px solid #ccc;
+    border: 1px solid var(--color-border);
     border-radius: 4px;
     box-sizing: border-box;
     font-size: 1rem;
   }
 
-  button {
-    background-color: #6366f1;
-    color: white;
-    padding: 0.8rem 1.5rem;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition:
-      background-color 0.3s ease,
-      transform 0.2s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    width: 100%;
-  }
-
-  button:hover {
-    background-color: #5258da;
-    transform: scale(1.02);
-  }
-
-  .login-link {
+  .link-container {
     margin-top: 1rem;
     text-align: center;
-    color: #6366f1;
+    color: var(--color-primary);
   }
 
-  .login-link a {
-    color: inherit;
-    text-decoration: none;
-    font-weight: 500;
+  .success-message {
+    background-color: var(--color-success);
+    color: var(--color-success-text);
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-size: 1rem;
   }
 
-  .login-link a:hover {
-    text-decoration: underline;
+  .error-message {
+    background-color: var(--color-danger);
+    color: var(--color-danger-text);
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-size: 0.875rem;
   }
 </style>
