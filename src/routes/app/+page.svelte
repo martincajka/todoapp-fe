@@ -165,35 +165,37 @@
 {/snippet}
 
 {#snippet doneRow(d)}
-  <div class="todo-header">
-    <input type="checkbox" class="todo-checkbox" bind:checked={d.done} />
-    <div class="todo-content">
-      <span class="text-label">{d.text}</span>
+  <div class="todo-wrapper">
+    <div class="todo-header">
+      <input type="checkbox" class="todo-checkbox" bind:checked={d.done} />
+      <div class="todo-content">
+        <span class="text-label">{d.text}</span>
+      </div>
+      <div class="todo-assignee">
+        <span>{d.assignee.text}</span>
+      </div>
+      <div class="todo-actions">
+        <IconButton aria-label="More info" onclick={() => toggleExpand(d)}>
+          <Info iconStyle="small primary" />
+        </IconButton>
+        <IconButton
+          variant="danger"
+          aria-label="Delete item"
+          onclick={deleteTodo(d)}
+        >
+          <Delete iconStyle="small danger" />
+        </IconButton>
+      </div>
     </div>
-    <div class="todo-assignee">
-      <span class="text-label">{d.assignee.text}</span>
-    </div>
-    <div class="todo-actions">
-      <IconButton aria-label="More info" onclick={() => toggleExpand(d)}>
-        <Info iconStyle="small primary" />
-      </IconButton>
-      <IconButton
-        variant="danger"
-        aria-label="Delete item"
-        onclick={deleteTodo(d)}
-      >
-        <Delete iconStyle="small danger" />
-      </IconButton>
-    </div>
+    {#if expandedTodo === d}
+      <div class="todo-more-info" transition:slide>
+        <p>Created At: {new Date(d.createdAt).toLocaleString()}</p>
+        {#if d.deadline}
+          <p>Deadline: {new Date(d.deadline).toLocaleString()}</p>
+        {/if}
+      </div>
+    {/if}
   </div>
-  {#if expandedTodo === d}
-    <div>
-      <p>Created At: {new Date(d.createdAt).toLocaleString()}</p>
-      {#if d.deadline}
-        <p>Deadline: {new Date(d.deadline).toLocaleString()}</p>
-      {/if}
-    </div>
-  {/if}
 {/snippet}
 
 <style>
@@ -323,5 +325,11 @@
   .done-todo-box {
     padding-top: 1rem;
     border-top: 1px solid var(--color-border);
+  }
+
+  .done-todo-box .text-label {
+    color: var(--color-text-secondary);
+    text-decoration: line-through;
+    text-decoration-color: var(--color-text-secondary);
   }
 </style>

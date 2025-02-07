@@ -25,8 +25,4 @@
     border-top: 1px solid var(--color-border);
     transition: all 0.2s ease;
   }
-
-  .done {
-    text-decoration: line-through;
-  }
 </style>
