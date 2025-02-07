@@ -20,6 +20,7 @@
   --slate-900: #0f172a;
 
   --red-50: #fef2f2;
+  --red-400: #f87171;
   --red-500: #ef4444;
   --red-600: #dc2626;
   --red-700: #b91c1c;
@@ -122,7 +123,6 @@ body {
     padding: 0;
     font-family: var(--font-primary);
     font-weight: 400;
-
   }
   
   h1{
