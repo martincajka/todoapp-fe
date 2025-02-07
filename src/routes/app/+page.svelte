@@ -79,47 +79,48 @@
   let allTodos = $derived(todos.filter((t) => !t.deleted).length);
 </script>
 
-<main class="todo-container">
-  <div class="todo-box">
-    <h1>Your day</h1>
+<div class="app-layout">
+  <main class="todo-container">
+    <div class="todo-box">
+      <h1>Your day</h1>
 
-    <div class="search-box">
-      <input
-        type="text"
-        placeholder="Search todos..."
-        bind:value={search}
-        class="text-input"
-      />
-    </div>
-
-    <div class="new-todo-box">
-      <input
-        type="text"
-        class="text-input"
-        placeholder="What needs to be done?"
-        bind:value={newTodo.text}
-        onkeydown={handleKeydown}
-      />
-      <Button onclick={add}><Plus iconStyle="medium primary"></Plus></Button>
-    </div>
-
-    <div class="current-todo-box">
-      <FilteredTodos data={displayActive()} row={todoRow} />
-    </div>
-
-    <div class="todo-stats">
-      <p>{remainingTodos} of {allTodos} remaining</p>
-    </div>
-
-    {#if allTodos !== remainingTodos}
-      <div class="done-todo-box">
-        <Button variant="danger" onclick={clear}>Delete completed</Button>
-        <FilteredTodos data={displayCompleted()} row={doneRow} />
+      <div class="search-box">
+        <input
+          type="text"
+          placeholder="Search todos..."
+          bind:value={search}
+          class="text-input"
+        />
       </div>
-    {/if}
-  </div>
-</main>
 
+      <div class="new-todo-box">
+        <input
+          type="text"
+          class="text-input"
+          placeholder="What needs to be done?"
+          bind:value={newTodo.text}
+          onkeydown={handleKeydown}
+        />
+        <Button onclick={add}><Plus iconStyle="medium primary"></Plus></Button>
+      </div>
+
+      <div class="current-todo-box">
+        <FilteredTodos data={displayActive()} row={todoRow} />
+      </div>
+
+      <div class="todo-stats">
+        <p>{remainingTodos} of {allTodos} remaining</p>
+      </div>
+
+      {#if allTodos !== remainingTodos}
+        <div class="done-todo-box">
+          <Button variant="danger" onclick={clear}>Delete completed</Button>
+          <FilteredTodos data={displayCompleted()} row={doneRow} />
+        </div>
+      {/if}
+    </div>
+  </main>
+</div>
 {#snippet todoRow(d)}
   <div class="todo-wrapper">
     <div class="todo-header">
@@ -196,16 +197,22 @@
 {/snippet}
 
 <style>
+  .app-layout {
+    background-color: var(--color-background);
+    background-size: cover;
+  }
+
   .todo-container {
     display: flex;
     justify-content: center;
     align-items: flex-start;
     min-height: 100vh;
-    background-color: #f8fafc;
+    background-color: var(--color-background);
   }
 
   .todo-box {
-    background: white;
+    background: var(--color-surface);
+    color: var(--color-text);
     padding: 2rem;
     border-radius: 12px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
@@ -214,7 +221,7 @@
   }
 
   h1 {
-    color: #4f46e5;
+    color: var(--color-text-header);
     font-size: 2rem;
     margin-bottom: 2rem;
     text-align: center;
@@ -229,7 +236,7 @@
   .text-input {
     width: 100%;
     padding: 0.75rem;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--color-border);
     border-radius: 8px;
     font-size: 1rem;
     transition: all 0.2s ease;
@@ -237,7 +244,7 @@
 
   .text-input:focus {
     outline: none;
-    border-color: #6366f1;
+    border-color: var(--color-primary);
     box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
   }
 
@@ -259,7 +266,7 @@
   .todo-wrapper {
     display: flex;
     flex-direction: column;
-    background: white;
+    background: var(--color-surface);
     width: 100%;
   }
 
@@ -274,7 +281,7 @@
     flex: 0 0 auto;
     width: 1.25rem;
     height: 1.25rem;
-    accent-color: #6366f1;
+    accent-color: var(--color-primary);
   }
 
   .todo-content {
@@ -309,12 +316,12 @@
 
   .todo-stats {
     text-align: center;
-    color: #64748b;
+    color: var(--color-text-secondary);
     margin: 1.5rem 0;
   }
 
   .done-todo-box {
     padding-top: 1rem;
-    border-top: 1px solid #e2e8f0;
+    border-top: 1px solid var(--color-border);
   }
 </style>

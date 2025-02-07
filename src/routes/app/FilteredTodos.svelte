@@ -22,13 +22,11 @@
     align-items: center;
     gap: 1rem;
     padding: 0.75rem 0.5rem;
-    background: white;
-    border-top: 1px solid #e2e8f0;
+    border-top: 1px solid var(--color-border);
     transition: all 0.2s ease;
   }
 
   .done {
     text-decoration: line-through;
-    background: #f8fafc;
   }
 </style>

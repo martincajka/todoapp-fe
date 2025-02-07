@@ -6,30 +6,24 @@
   setTimeout(() => (showContent = true), 500); // Delay content reveal
 </script>
 
-<!-- <div class="landing-container"> -->
-<div class="landing-content" class:show={showContent}>
-  <h1>Your Awesome ToDo App</h1>
-  <p>
-    Organize your tasks, track your progress, and achieve your goals with our
-    intuitive and powerful ToDo app. Get started today and experience the
-    difference!
-  </p>
-  <div class="cta-buttons">
-    <button on:click={() => goto("/login")}>Login</button>
-    <button on:click={() => goto("/register")}>Register</button>
+<div class="landing-container">
+  <div class="landing-content" class:show={showContent}>
+    <h1>Your Awesome ToDo App</h1>
+    <p>
+      Organize your tasks, track your progress, and achieve your goals with our
+      intuitive and powerful ToDo app. Get started today and experience the
+      difference!
+    </p>
+    <div class="cta-buttons">
+      <button on:click={() => goto("/login")}>Login</button>
+      <button on:click={() => goto("/register")}>Register</button>
+    </div>
   </div>
 </div>
 
-<!-- </div> -->
-
 <style>
-  /* Container with a modern gradient background */
-  /* .landing-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
+  /* Content fade-in animation */
+  .landing-container {
     background: linear-gradient(
       135deg,
       var(--color-primary) 0%,
@@ -37,20 +31,23 @@
     );
     color: #fff;
     overflow: hidden;
-    margin: 0; 
-  padding: 0;
-  } */
-
-  /* Content fade-in animation */
-  .landing-content {
-    max-width: 600px;
-    text-align: center;
-    opacity: 0;
-    transform: translateY(20px);
-    transition:
-      opacity 0.6s ease,
-      transform 0.6s ease;
+    margin: 0; /* Remove default margin */
+    padding: 2rem;
   }
+
+  .landing-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    opacity: 0;
+    transform: translateY(1rem);
+    transition:
+      opacity 0.5s ease,
+      transform 0.5s ease;
+  }
+
   .landing-content.show {
     opacity: 1;
     transform: translateY(0);
